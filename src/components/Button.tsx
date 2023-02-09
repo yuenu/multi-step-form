@@ -6,8 +6,15 @@ interface Props {
   text: string
 }
 
-export function Button ({ type = 'button', className, text }: Props) {
+export function Button({ type = 'button', className, text }: Props) {
   return (
-    <button className={clsx('px-6 py-3 text-white bg-blue-marine rounded-lg hover:opacity-90', className)} type={type}>{text}</button>
+    <button
+      type={type}
+      className={clsx(
+        'px-6 py-3 text-white bg-blue-marine rounded-lg hover:opacity-90',
+        className
+      )}>
+      {text}
+    </button>
   )
 }
