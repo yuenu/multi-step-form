@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useContext } from 'react'
 import { STEP_LIST } from '@/constant'
-import { StepItem, Step1 } from '@/components'
+import { StepItem } from '@/components'
+import { ContextType, StoreContext } from '@/context'
 
 function App() {
-  const [currentStep, setCurrentStep] = useState(1)
+  const ctx = useContext(StoreContext) as ContextType
+
   return (
     <div className="app">
       <div className="container">
@@ -15,16 +17,15 @@ function App() {
                 index={step.key}
                 label={step.label}
                 text={step.text}
-                active={currentStep === step.key}
-                onClick={() => {
-                  setCurrentStep(step.key)
-                }}
               />
             ))}
           </ul>
         </div>
         <div className="content">
-          <Step1 />
+          {
+            STEP_LIST.find((step) => step.key === ctx.currentStep)
+              ?.component
+          }
         </div>
       </div>
     </div>

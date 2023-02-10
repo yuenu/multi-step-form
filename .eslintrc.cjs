@@ -55,5 +55,15 @@ module.exports = {
         singleQuote: true,
       },
     ],
+    '@typescript-eslint/ban-types': [
+      'error',
+      {
+        types: {
+          // un-ban a type that's banned by default
+          '{}': false,
+        },
+        extendDefaults: true,
+      },
+    ],
   },
 }
