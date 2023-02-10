@@ -1,7 +1,8 @@
-import { useState, useContext } from 'react'
-import { clsx } from 'clsx'
-import { Input, Button } from '.'
+import { useState, useEffect, useContext } from 'react'
+import clsx from 'clsx'
+import { Input, Button, PlanCard } from '.'
 import { ContextType, StoreContext } from '@/context'
+import { PLAN_LIST } from '@/constant'
 
 interface StepProps {
   label: string
@@ -40,15 +41,33 @@ export function Step1() {
 
   const ctx = useContext(StoreContext) as ContextType
 
+  useEffect(() => {
+    if (ctx.personalInfo.name) {
+      setName((prev) => ({ ...prev, value: ctx.personalInfo.name }))
+      setEmail((prev) => ({ ...prev, value: ctx.personalInfo.email }))
+      setPhone((prev) => ({ ...prev, value: ctx.personalInfo.phone }))
+    }
+  }, [
+    ctx.personalInfo.email,
+    ctx.personalInfo.name,
+    ctx.personalInfo.phone,
+  ])
+
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
+    // TODO: Refactor to no using multiple state
     setName((prev) => ({ ...prev, error: !name.value }))
     setEmail((prev) => ({ ...prev, error: !email.value }))
     setPhone((prev) => ({ ...prev, error: !phone.value }))
 
     if (!!name.value && !!email.value && !!phone.value) {
-      ctx.setStep(ctx.currentStep + 1)
+      ctx.setPersonalInfo({
+        name: name.value,
+        email: email.value,
+        phone: phone.value,
+      })
+      ctx.setStep(2)
     }
   }
 
@@ -103,13 +122,129 @@ export function Step1() {
 }
 
 export function Step2() {
-  return <div>Step2</div>
+  const ctx = useContext(StoreContext) as ContextType
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    ctx.setStep(3)
+  }
+
+  function onSwitchPlan() {
+    ctx.setPlan({
+      select: ctx.plan.select,
+      isYear: !ctx.plan.isYear,
+    })
+  }
+
+  return (
+    <form className="h-full flex flex-col" onSubmit={onSubmit}>
+      <h2 className="text-blue-marine font-bold text-[2rem] mb-1">
+        Select your plan
+      </h2>
+      <p className="text-gray-cool">
+        You have the option of monthly or yearly billing.
+      </p>
+
+      <div className="mt-10 flex gap-5 mb-10">
+        {PLAN_LIST.map((plan) => (
+          <PlanCard
+            id={plan.id}
+            key={plan.id}
+            name={plan.name}
+            Image={plan.Image}
+            monthPrice={plan.monthPrice}
+            yearPrice={plan.yearPrice}
+            isYear={ctx.plan.isYear}
+          />
+        ))}
+      </div>
+
+      <div className="bg-gray-alabaster h-12 rounded-lg flex justify-center items-center">
+        <button type="button">
+          <label
+            htmlFor="Toggle1"
+            className="inline-flex items-center space-x-4 cursor-pointer text-blue-marine text-sm">
+            <span>Monthly</span>
+            <span className="relative">
+              <input
+                checked={ctx.plan.isYear}
+                onChange={() => onSwitchPlan()}
+                id="Toggle1"
+                type="checkbox"
+                className="hidden peer transition-all"
+              />
+              <div className="w-10 h-6 rounded-full shadow-inner dark:bg-blue-marine transition-colors"></div>
+              <div className="absolute inset-y-0 left-0 w-4 h-4 m-1 rounded-full shadow peer-checked:right-0 peer-checked:left-auto dark:bg-white "></div>
+            </span>
+            <span>Yearly</span>
+          </label>
+        </button>
+      </div>
+
+      <div className="mt-auto flex justify-between">
+        <Button
+          type="button"
+          text="Go Back"
+          className="bg-transparent text-blue-marine"
+          onClick={() => ctx.setStep(1)}
+        />
+        <Button type="submit" text="Next Step" />
+      </div>
+    </form>
+  )
 }
 
 export function Step3() {
-  return <div>Step3</div>
+  const ctx = useContext(StoreContext) as ContextType
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    ctx.setStep(4)
+  }
+  return (
+    <form className="h-full flex flex-col" onSubmit={onSubmit}>
+      <h2 className="text-blue-marine font-bold text-[2rem] mb-1">
+        Pick add-ons
+      </h2>
+      <p className="text-gray-cool">
+        Add-ons help enhance your gaming experience.
+      </p>
+
+      <div className="mt-auto flex justify-between">
+        <Button
+          type="button"
+          text="Go Back"
+          className="bg-transparent text-blue-marine"
+          onClick={() => ctx.setStep(2)}
+        />
+        <Button type="submit" text="Next Step" />
+      </div>
+    </form>
+  )
 }
 
 export function Step4() {
-  return <div>Step4</div>
+  const ctx = useContext(StoreContext) as ContextType
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    ctx.setStep(5)
+  }
+  return (
+    <form className="h-full flex flex-col" onSubmit={onSubmit}>
+      <h2 className="text-blue-marine font-bold text-[2rem] mb-1">
+        Finishing up
+      </h2>
+      <p className="text-gray-cool">
+        Double-check everything looks OK before confirming.
+      </p>
+
+      <div className="mt-auto flex justify-between">
+        <Button
+          type="button"
+          text="Go Back"
+          className="bg-transparent text-blue-marine"
+          onClick={() => ctx.setStep(3)}
+        />
+        <Button type="submit" text="Next Step" />
+      </div>
+    </form>
+  )
 }
