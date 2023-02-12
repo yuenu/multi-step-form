@@ -4,6 +4,7 @@ import { useReducer, createContext } from 'react'
 const SET_STEP = 'CHANGE_STEP'
 const SET_PERSONINFO = 'SET_PERSONINFO'
 const SET_PLAN = 'SET_PLAN'
+const SET_ADDONS = 'SET_ADDONS'
 
 const defaultState = {
   currentStep: 1,
@@ -16,6 +17,7 @@ const defaultState = {
     select: 1,
     isYear: false,
   },
+  addons: [] as number[],
 }
 
 // TYPE DEFINITION
@@ -23,11 +25,13 @@ type DefaultStateType = typeof defaultState
 type StepType = DefaultStateType['currentStep']
 type PersonalInfoType = DefaultStateType['personalInfo']
 type PlanType = DefaultStateType['plan']
+type AddonsType = DefaultStateType['addons']
 
 export type ContextType = DefaultStateType & {
   setStep: (step: StepType) => void
   setPersonalInfo: (info: PersonalInfoType) => void
   setPlan: (plan: PlanType) => void
+  setAddons: (addons: number) => void
 }
 
 type Action =
@@ -42,6 +46,10 @@ type Action =
   | {
       type: typeof SET_PLAN
       payload: PlanType
+    }
+  | {
+      type: typeof SET_ADDONS
+      payload: AddonsType
     }
 
 // CONTEXT
@@ -70,6 +78,13 @@ export const reudcer = (state: DefaultStateType, action: Action) => {
     }
   }
 
+  if (action.type === SET_ADDONS) {
+    return {
+      ...state,
+      addons: action.payload,
+    }
+  }
+
   return state
 }
 
@@ -93,13 +108,28 @@ export const StoreProvider = ({
     dispatchAction({ type: SET_PLAN, payload: plan })
   }
 
+  const setAddonsHandler = (target: number) => {
+    const addonsIndex = state.addons.findIndex(
+      (add) => add === target
+    )
+    const updateAddons = [...state.addons]
+    if (addonsIndex === -1) {
+      updateAddons.push(target)
+    } else {
+      updateAddons.splice(addonsIndex, 1)
+    }
+    dispatchAction({ type: SET_ADDONS, payload: updateAddons })
+  }
+
   const contextValue = {
     currentStep: state.currentStep,
     personalInfo: state.personalInfo,
     plan: state.plan,
+    addons: state.addons,
     setStep: setStepHandler,
     setPersonalInfo: setPersonalInfoHandler,
     setPlan: setPlanHandler,
+    setAddons: setAddonsHandler,
   }
 
   return (

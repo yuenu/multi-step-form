@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext } from 'react'
 import clsx from 'clsx'
-import { Input, Button, PlanCard } from '.'
+import { Input, Button, PlanCard, AddonsCard } from '.'
 import { ContextType, StoreContext } from '@/context'
-import { PLAN_LIST } from '@/constant'
+import { PLAN_LIST, ADDONS_LIST } from '@/constant'
 
 interface StepProps {
   label: string
@@ -151,8 +151,7 @@ export function Step2() {
             key={plan.id}
             name={plan.name}
             Image={plan.Image}
-            monthPrice={plan.monthPrice}
-            yearPrice={plan.yearPrice}
+            price={plan.price}
             isYear={ctx.plan.isYear}
           />
         ))}
@@ -207,6 +206,18 @@ export function Step3() {
       <p className="text-gray-cool">
         Add-ons help enhance your gaming experience.
       </p>
+
+      <div className="mt-10 flex flex-col gap-5">
+        {ADDONS_LIST.map((add) => (
+          <AddonsCard
+            id={add.id}
+            key={add.id}
+            name={add.name}
+            description={add.description}
+            price={add.price}
+          />
+        ))}
+      </div>
 
       <div className="mt-auto flex justify-between">
         <Button

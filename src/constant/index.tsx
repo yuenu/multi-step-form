@@ -31,23 +31,41 @@ export const PLAN_LIST = [
   {
     id: 1,
     name: 'Arcade',
-    monthPrice: '9',
-    yearPrice: '90',
+    price: 9,
     Image: Icon.Arcade,
   },
   {
     id: 2,
     name: 'Advanced',
-    monthPrice: '12',
-    yearPrice: '120',
+    price: 12,
     Image: Icon.Advanced,
   },
   {
     id: 3,
     name: 'Pro',
-    monthPrice: '15',
-    yearPrice: '150',
+    price: 15,
     Image: Icon.Pro,
+  },
+]
+
+export const ADDONS_LIST = [
+  {
+    id: 1,
+    name: 'Online service',
+    description: 'Access to multiplayer games',
+    price: 1,
+  },
+  {
+    id: 2,
+    name: 'Larger storage',
+    description: 'Extra 1TB of cloud save',
+    price: 2,
+  },
+  {
+    id: 3,
+    name: 'Customizable Profile',
+    description: 'Custom theme on your profile',
+    price: 2,
   },
 ]
 
@@ -59,3 +77,4 @@ type ArrayElement<ArrayType extends readonly unknown[]> =
 
 export type PlanType = ArrayElement<typeof PLAN_LIST>
 // export type PlanType = Omit<ArrayElement<typeof PLAN_LIST>, 'id'>
+export type AddonsType = ArrayElement<typeof ADDONS_LIST>
