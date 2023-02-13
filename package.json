@@ -2,6 +2,7 @@
   "name": "multi-step-form",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://yuenu.github.io/multi-step-form",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,7 +12,9 @@
     "lint:fix": "yarn lint --fix",
     "prettier": "npx prettier src --check",
     "prettier:fix": "yarn prettier --write",
-    "format": "yarn prettier:fix && yarn lint:fix"
+    "format": "yarn prettier:fix && yarn lint:fix",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -33,6 +36,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "gh-pages": "^5.0.0",
     "postcss": "^8.4.21",
     "prettier": "^2.5.1",
     "tailwindcss": "^3.2.4",
