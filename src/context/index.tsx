@@ -17,7 +17,13 @@ const defaultState = {
     select: 1,
     isYear: false,
   },
-  addons: [] as number[],
+  addons: {
+    A: false,
+    B: false,
+    C: false,
+  } as {
+    [key: string]: boolean
+  },
 }
 
 // TYPE DEFINITION
@@ -31,7 +37,7 @@ export type ContextType = DefaultStateType & {
   setStep: (step: StepType) => void
   setPersonalInfo: (info: PersonalInfoType) => void
   setPlan: (plan: PlanType) => void
-  setAddons: (addons: number) => void
+  setAddons: (addons: string) => void
 }
 
 type Action =
@@ -108,16 +114,9 @@ export const StoreProvider = ({
     dispatchAction({ type: SET_PLAN, payload: plan })
   }
 
-  const setAddonsHandler = (target: number) => {
-    const addonsIndex = state.addons.findIndex(
-      (add) => add === target
-    )
-    const updateAddons = [...state.addons]
-    if (addonsIndex === -1) {
-      updateAddons.push(target)
-    } else {
-      updateAddons.splice(addonsIndex, 1)
-    }
+  const setAddonsHandler = (target: string) => {
+    const updateAddons = { ...state.addons }
+    updateAddons[target] = !state.addons[target]
     dispatchAction({ type: SET_ADDONS, payload: updateAddons })
   }
 

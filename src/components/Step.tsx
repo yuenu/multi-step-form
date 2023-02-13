@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import clsx from 'clsx'
-import { Input, Button, PlanCard, AddonsCard } from '.'
+import { Input, Button, PlanCard, AddonsCard, Icon } from '.'
 import { ContextType, StoreContext } from '@/context'
 import { PLAN_LIST, ADDONS_LIST } from '@/constant'
 
@@ -16,12 +16,12 @@ export function StepItem({ index, label, text }: StepProps) {
   return (
     <li
       role="presentation"
-      className="text-white flex gap-4 items-center text-sm cursor-pointer"
-      onClick={() => ctx.setStep(index)}>
+      className="text-white flex gap-4 items-center text-sm">
       <div
         className={clsx(
           'border font-bold rounded-full w-9 h-9 leading-8 text-center',
-          ctx.currentStep === index &&
+          (ctx.currentStep === index ||
+            (ctx.currentStep === 5 && index === 4)) &&
             'bg-blue-light text-blue-marine'
         )}>
         {index}
@@ -183,7 +183,7 @@ export function Step2() {
         <Button
           type="button"
           text="Go Back"
-          className="bg-transparent text-blue-marine"
+          className="bg-transparenttext-gray-cool hover:text-blue-marine"
           onClick={() => ctx.setStep(1)}
         />
         <Button type="submit" text="Next Step" />
@@ -223,7 +223,7 @@ export function Step3() {
         <Button
           type="button"
           text="Go Back"
-          className="bg-transparent text-blue-marine"
+          className="bg-transparent text-gray-cool hover:text-blue-marine"
           onClick={() => ctx.setStep(2)}
         />
         <Button type="submit" text="Next Step" />
@@ -238,6 +238,33 @@ export function Step4() {
     e.preventDefault()
     ctx.setStep(5)
   }
+
+  const isYear = ctx.plan.isYear
+
+  const targetPlan = PLAN_LIST.find(
+    (plan) => plan.id === ctx.plan.select
+  )
+
+  const planName =
+    targetPlan!.name + `(${isYear ? 'Yearly' : 'Monthly'})`
+
+  const planPrice = isYear
+    ? `$${targetPlan!.price * 10}/yr`
+    : `$${targetPlan!.price}/mo`
+
+  const addonsItems = ADDONS_LIST.filter(
+    (addons) => ctx.addons[addons.id]
+  )
+
+  const totalPrice = () => {
+    let total = targetPlan!.price
+    addonsItems.forEach((addons) => {
+      total += addons.price
+    })
+
+    return isYear ? total * 10 : total
+  }
+
   return (
     <form className="h-full flex flex-col" onSubmit={onSubmit}>
       <h2 className="text-blue-marine font-bold text-[2rem] mb-1">
@@ -247,15 +274,77 @@ export function Step4() {
         Double-check everything looks OK before confirming.
       </p>
 
+      <div className="mt-10">
+        <div className=" bg-gray-alabaster rounded-md px-6 divide-y">
+          <div className="pt-4 pb-6 text-sm flex items-center justify-between">
+            <div>
+              <h3 className="font-[600] text-blue-marine mb-1">
+                {planName}
+              </h3>
+              <button
+                className="text-gray-cool underline"
+                type="button"
+                onClick={() => ctx.setStep(2)}>
+                Change
+              </button>
+            </div>
+            <span className="font-[700] text-blue-marine">
+              {planPrice}
+            </span>
+          </div>
+          <div className="py-6 text-sm text-gray-cool space-y-3">
+            {addonsItems.map((item) => (
+              <div
+                className="flex justify-between items-center"
+                key={item.id}>
+                <h3>{item.description}</h3>
+                <p>
+                  ${isYear ? item.price * 10 : item.price}/$
+                  {isYear ? 'yr' : 'mo'}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="p-6 flex justify-between items-center">
+          <h3 className="text-gray-cool">
+            Total (per {isYear ? 'year' : 'month'})
+          </h3>
+          <p className="font-bold text-lg text-blue-purplish">
+            ${totalPrice()}/{isYear ? 'yr' : 'mo'}
+          </p>
+        </div>
+      </div>
+
       <div className="mt-auto flex justify-between">
         <Button
           type="button"
           text="Go Back"
-          className="bg-transparent text-blue-marine"
+          className="bg-transparent text-gray-cool hover:text-blue-marine"
           onClick={() => ctx.setStep(3)}
         />
-        <Button type="submit" text="Next Step" />
+        <Button
+          type="submit"
+          text="Confirm"
+          className="bg-blue-purplish"
+        />
       </div>
     </form>
+  )
+}
+
+export function Step5() {
+  return (
+    <div className="w-full h-full flex flex-col justify-center items-center">
+      <Icon.Thanks className="mb-6" />
+      <h3 className="text-2xl text-blue-marine font-bold mb-4">
+        Thank you!
+      </h3>
+      <p className="text-gray-cool text-center">
+        Thanks for confirming your subscription! We hope you have fun
+        using our platform. If you ever need support, please feel free
+        to email us at support@loremgaming.com.
+      </p>
+    </div>
   )
 }

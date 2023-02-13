@@ -53,9 +53,7 @@ export function AddonsCard({
   price,
 }: AddonsType) {
   const ctx = useContext(StoreContext) as ContextType
-  const [checked, setChecked] = useState(
-    !!ctx.addons.find((add) => add === id)
-  )
+  const [checked, setChecked] = useState(ctx.addons[id])
   const preiceDisplay =
     '$' + (ctx.plan.isYear ? `${price * 10}/yr` : `${price}/mo`)
 

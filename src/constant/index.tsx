@@ -50,19 +50,19 @@ export const PLAN_LIST = [
 
 export const ADDONS_LIST = [
   {
-    id: 1,
+    id: 'A',
     name: 'Online service',
     description: 'Access to multiplayer games',
     price: 1,
   },
   {
-    id: 2,
+    id: 'B',
     name: 'Larger storage',
     description: 'Extra 1TB of cloud save',
     price: 2,
   },
   {
-    id: 3,
+    id: 'C',
     name: 'Customizable Profile',
     description: 'Custom theme on your profile',
     price: 2,

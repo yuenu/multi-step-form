@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { STEP_LIST } from '@/constant'
-import { StepItem } from '@/components'
+import { StepItem, Step5 } from '@/components'
 import { ContextType, StoreContext } from '@/context'
 
 function App() {
@@ -22,10 +22,8 @@ function App() {
           </ul>
         </div>
         <div className="content">
-          {
-            STEP_LIST.find((step) => step.key === ctx.currentStep)
-              ?.component
-          }
+          {STEP_LIST.find((step) => step.key === ctx.currentStep)
+            ?.component || <Step5 />}
         </div>
       </div>
     </div>
