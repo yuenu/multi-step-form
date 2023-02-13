@@ -20,7 +20,7 @@ export function Input({
   return (
     <div>
       <label
-        className="mb-1 font-thin text-sm flex justify-between"
+        className="mb-1 font-thin text-sm flex justify-between text-blue-marine"
         htmlFor={label}>
         {label}
         {error && (
@@ -36,7 +36,7 @@ export function Input({
         value={value}
         placeholder={placeholder}
         className={clsx(
-          'h-12 border w-full py-2 px-4 text-blue-marine rounded-lg focus:border-blue-marine',
+          'h-12 border w-full py-2 px-4 text-blue-marine rounded-lg focus:outline-none focus:border-blue-purplish',
           error && 'border-red-strawberry'
         )}
         onChange={onChange}

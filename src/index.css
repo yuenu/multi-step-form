@@ -27,19 +27,23 @@
 
 @layer components {
   .app {
-    @apply bg-gray-magnolia min-h-screen flex justify-center items-center;
+    @apply bg-gray-magnolia min-h-screen flex justify-center;
+    @apply md:items-center;
   }
 
   .container {
-    @apply h-[70vh] bg-white rounded-xl p-4 flex gap-20 w-auto shadow-lg;
+    @apply h-[70vh]  rounded-xl p-4 flex flex-col gap-20 w-auto;
+    @apply md:flex-row md:bg-white md:shadow-lg;
   }
 
   .sidebar {
-    @apply w-[300px] bg-sidebar-desktop h-full bg-no-repeat bg-cover p-8 rounded-lg;
+    @apply w-full bg-sidebar-mobile absolute top-0 left-0 h-[20vh]  bg-no-repeat bg-cover p-0 pb-[5vh] rounded-none flex;
+    @apply md:relative md:w-[300px] md:bg-sidebar-desktop md:h-full md:rounded-lg md:p-8;
   }
 
   .content {
-    @apply pt-10 pb-4 mr-16 w-[450px];
+    @apply w-full bg-white p-6 rounded-lg shadow-lg z-10 mt-[10.5vh];
+    @apply md:w-[450px] md:mr-16 md:p-0 md:pb-4 md:shadow-none md:mt-0 md:pt-10;
   }
 }
 

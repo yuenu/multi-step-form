@@ -15,7 +15,9 @@ export function PlanCard({
   price,
 }: PlanCardType) {
   const ctx = useContext(StoreContext) as ContextType
-  const priceDisplay = `$${isYear ? 10 * price : price}/yr`
+  const priceDisplay = `$${isYear ? 10 * price : price}/${
+    isYear ? 'yr' : 'mo'
+  }`
 
   function onSelect(id: number) {
     ctx.setPlan({
@@ -27,21 +29,25 @@ export function PlanCard({
   return (
     <button
       className={clsx(
-        'outline outline-1 outline-gray-light p-4 rounded-lg flex-1 cursor-pointer hover:outline-blue-purplish transition-all text-left',
+        'outline outline-1 outline-gray-light p-4 rounded-lg flex-1 cursor-pointer  transition-all text-left flex flex-row gap-4',
         ctx.plan.select === id &&
-          'outline-blue-purplish bg-gray-alabaster'
+          'outline-blue-purplish bg-gray-alabaster',
+        'hover:outline-blue-purplish',
+        'md:flex-col md:gap-12'
       )}
       type="button"
       onKeyDown={() => onSelect(id)}
       onClick={() => onSelect(id)}>
-      <Image className="mb-12" />
-      <p className="text-blue-marine font-[500]">{name}</p>
-      <p className="text-gray-cool">{priceDisplay}</p>
-      {isYear && (
-        <p className="text-blue-marine text-sm font-400">
-          2 months free
-        </p>
-      )}
+      <Image />
+      <div>
+        <p className="text-blue-marine font-[500]">{name}</p>
+        <p className="text-gray-cool">{priceDisplay}</p>
+        {isYear && (
+          <p className="text-blue-marine text-sm font-400">
+            2 months free
+          </p>
+        )}
+      </div>
     </button>
   )
 }
@@ -63,7 +69,10 @@ export function AddonsCard({
   }
   return (
     <button
-      className="outline outline-1 outline-gray-light w-full p-5 rounded-lg flex items-center justify-between cursor-pointer"
+      className={clsx(
+        'outline outline-1 outline-gray-light w-full p-5 rounded-lg flex items-center justify-between cursor-pointer',
+        checked && 'bg-gray-alabaster outline-blue-purplish'
+      )}
       type="button"
       onClick={onClick}>
       <div className="flex items-center gap-5 text-sm">
@@ -76,8 +85,8 @@ export function AddonsCard({
             console.log('onchange', evt.target.value)
           }}
           className={clsx(
-            'w-4 h-4 text-blue-600 bg-gray-100 border-gray-light rounded',
-            ' dark:focus:ring-blue-600 focus:ring-2',
+            'w-5 h-5 accent-blue-purplish bg-gray-100 border-gray-light rounded',
+            ' dark:focus:ring-blue-purplish focus:ring-2',
             'dark:bg-gray-700'
           )}
         />

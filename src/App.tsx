@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { useContext } from 'react'
 import { STEP_LIST } from '@/constant'
 import { StepItem, Step5 } from '@/components'
@@ -10,7 +11,11 @@ function App() {
     <div className="app">
       <div className="container">
         <div className="sidebar">
-          <ul className="w-full space-y-7">
+          <ul
+            className={clsx(
+              'w-full flex gap-6 justify-center',
+              'md:block md:space-y-7'
+            )}>
             {STEP_LIST.map((step) => (
               <StepItem
                 key={step.key}
